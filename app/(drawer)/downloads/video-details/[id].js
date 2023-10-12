@@ -30,13 +30,15 @@ const VideoDetails = () => {
   const params = useSearchParams();
   const router = useRouter();
 
-  const { isLoading, error, refetch } = useFetch("id", params.id, 1);
+  // const { isLoading, error, refetch } = useFetch("id", params.id, 1);
 
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getVideo = () => {
+    setIsLoading(true);
     db.transaction((tx) => {
       tx.executeSql(
         "Select * from `videos` where id=? ",
@@ -44,6 +46,7 @@ const VideoDetails = () => {
         (txObj, resultSet) => {
           setData(resultSet.rows._array);
           console.log(resultSet.rows._array);
+          setIsLoading(false);
         },
         (txObj, error) => console.log(error)
       );
@@ -108,11 +111,7 @@ const VideoDetails = () => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          {isLoading ? (
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          ) : error ? (
-            <Text>Something went wrong</Text>
-          ) : data.length === 0 ? (
+          {isLoading || data.length === 0 ? (
             <ActivityIndicator size="large" color={COLORS.primary} />
           ) : (
             <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>

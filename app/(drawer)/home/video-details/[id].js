@@ -99,8 +99,8 @@ const VideoDetails = () => {
                 description={data[0].description}
                 fileName={data[0].fileName}
                 poster={data[0].poster}
-                category={data[0].category}
-                language={data[0].language}
+                category={data[0].categoryId}
+                language={data[0].languageId}
               />
 
               <JobTabs

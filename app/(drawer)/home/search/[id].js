@@ -10,11 +10,11 @@ import { Stack, useRouter, useSearchParams } from "expo-router";
 import { Text, SafeAreaView } from "react-native";
 import axios from "axios";
 
-import { ScreenHeaderBtn, NearbyJobCard } from "../../../../components";
-import { COLORS, icons, SIZES } from "../../../../constants";
+import { ScreenHeaderBtn, CompletedVideoCard } from "../../../../components";
+import { COLORS, icons, SIZES, images } from "../../../../constants";
 import styles from "../../../../styles/search";
 import { SERVER } from "../../../../constants/url";
-const JobSearch = () => {
+const ContentSearch = () => {
   const params = useSearchParams();
   const router = useRouter();
 
@@ -30,13 +30,15 @@ const JobSearch = () => {
     try {
       const options = {
         method: "GET",
-        url: `${SERVER.url}/api/video/search/${params.id}/${newPage}`,
+        url: `${SERVER.url}/api/content/search/${params.id}/${newPage}`,
         // url: `http://192.168.145.254:5000/api/video/findAll/${params.id}`,
       };
 
       const response = await axios.request(options);
       console.log("options.url: " + options.url);
-      // console.log("response.data: " + response.data);
+      console.log("response.data: " + response.data);
+      console.log("params.id: " + params.id);
+      console.log("newPage: " + newPage);
       setSearchResult(response.data);
     } catch (error) {
       setSearchError(error);
@@ -82,8 +84,8 @@ const JobSearch = () => {
       <FlatList
         data={searchResult}
         renderItem={({ item }) => (
-          <NearbyJobCard
-            job={item}
+          <CompletedVideoCard
+            video={item}
             handleNavigate={() =>
               router.push(`/(drawer)/home/video-details/${item.id}`)
             }
@@ -140,4 +142,4 @@ const JobSearch = () => {
   );
 };
 
-export default JobSearch;
+export default ContentSearch;

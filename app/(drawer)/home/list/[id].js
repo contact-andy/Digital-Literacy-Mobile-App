@@ -33,7 +33,7 @@ const VideoList = () => {
     try {
       const options = {
         method: "GET",
-        url: `${SERVER.url}/api/video/cat/${params.id}/${newPage}`,
+        url: `${SERVER.url}/api/content/cat/${params.id}/${newPage}`,
         // url: `http://192.168.145.254:5000/api/video/findAll/${params.id}`,
       };
 

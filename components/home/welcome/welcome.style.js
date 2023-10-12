@@ -62,11 +62,21 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.medium,
     borderWidth: 1,
     borderColor: activeJobType === item ? COLORS.secondary : COLORS.gray2,
+    // flex: 1,
+    // flexDirection: "column",
+    margin: 5,
+    // justifyContent: "center",
+    alignItems: "center",
+    width: "47%",
   }),
   tabText: (activeJobType, item) => ({
     fontFamily: FONT.medium,
     color: activeJobType === item ? COLORS.secondary : COLORS.gray2,
   }),
+  logoImage: {
+    width: "100%",
+    height: 100,
+  },
 });
 
 export default styles;

@@ -1,5 +1,12 @@
-import { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+} from "react-native";
 import { Stack, useRouter } from "expo-router";
 
 import { COLORS, icons, images, SIZES } from "../../../constants";
@@ -16,6 +23,22 @@ import * as SQLite from "expo-sqlite";
 const Home = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  let testCounter = 1;
+  const onRefresh = useCallback(() => {
+    testCounter++;
+    setRefreshing(true);
+    setIsLoading(!isLoading);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+    console.log("From Home: " + isLoading);
+  }, []);
+
+  const ReloadComponent = () => {
+    return <Text>{testCounter}</Text>;
+  };
 
   const db = SQLite.openDatabase("db.testDb"); // returns Database object
   useEffect(() => {
@@ -98,7 +121,7 @@ const Home = () => {
     // });
 
     // console.log("All Tables Created!");
-  }, []);
+  }, [isLoading]);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <Drawer.Screen
@@ -133,25 +156,45 @@ const Home = () => {
         }}
       /> */}
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View
           style={{
             flex: 1,
             padding: SIZES.medium,
           }}
         >
-          <Welcome
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            handleClick={() => {
-              if (searchTerm) {
-                router.push(`/(drawer)/home/search/${searchTerm}`);
-              }
+          <View>
+            <Welcome
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              handleClick={() => {
+                if (searchTerm) {
+                  router.push(`/(drawer)/home/search/${searchTerm}`);
+                }
+              }}
+              isLoading={isLoading}
+            />
+          </View>
+          {/* <View style={{ backgroundColor: "red" }}>
+            <Text>Start</Text>
+            <ReloadComponent />
+            <Text>End</Text>
+          </View> */}
+          {/* <RecentVideos /> */}
+          <View
+            style={{
+              flex: 1,
+              padding: SIZES.medium,
             }}
-          />
-
-          <RecentVideos />
-          <CompletedVideos />
+          >
+            <CompletedVideos />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

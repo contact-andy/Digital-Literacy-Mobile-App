@@ -4,6 +4,10 @@ import styles from "./completedVideoCard.style";
 import { checkImageURL } from "../../../../utils";
 import { SERVER } from "../../../../constants/url";
 const CompletedVideoCard = ({ video, handleNavigate }) => {
+  console.log(video);
+  const testImage = checkImageURL(`${SERVER.url}/posters/` + video?.poster)
+    ? true
+    : false;
   return (
     <TouchableOpacity style={styles.container} onPress={handleNavigate}>
       <TouchableOpacity style={styles.logoContainer}>
@@ -11,7 +15,7 @@ const CompletedVideoCard = ({ video, handleNavigate }) => {
           source={{
             uri: checkImageURL(`${SERVER.url}/posters/` + video?.poster)
               ? `${SERVER.url}/posters/` + video?.poster
-              : "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
+              : `${SERVER.url}/posters/videoIcon.png`,
           }}
           resizeMode="contain"
           style={styles.logImage}

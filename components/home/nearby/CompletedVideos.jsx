@@ -9,11 +9,12 @@ import useFetch from "../../../hook/useFetch";
 
 const CompletedVideos = () => {
   const router = useRouter();
-  const { data, isLoading, error } = useFetch("cat", "other", 1);
+  const { data, isLoading, error } = useFetch("cat", "Health", 1);
+  console.log(data);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Completed Lecture Videos</Text>
+        <Text style={styles.headerTitle}>Completed Digital Contents</Text>
         <TouchableOpacity>
           <Text style={styles.headerBtn}>Show all</Text>
         </TouchableOpacity>

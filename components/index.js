@@ -14,6 +14,7 @@ import Specifics from "./videodetails/specifics/Specifics";
 
 // common
 import CompletedVideoCard from "./common/cards/nearby/CompletedVideosCard";
+import DownloadContentCard from "./common/cards/download/DownloadContentCard";
 
 export {
   ScreenHeaderBtn,
@@ -26,4 +27,5 @@ export {
   JobFooter,
   Specifics,
   CompletedVideoCard,
+  DownloadContentCard,
 };

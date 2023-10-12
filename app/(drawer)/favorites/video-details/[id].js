@@ -1,5 +1,5 @@
 import { Stack, useRouter, useSearchParams } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -19,44 +19,21 @@ import {
 } from "../../../../components";
 import { COLORS, icons, SIZES } from "../../../../constants";
 import useFetch from "../../../../hook/useFetch";
-import DownloadView from "../../../../components/videodetails/company/DownloadView";
-import * as SQLite from "expo-sqlite";
 
 const tabs = ["About", "Additonal Materials"];
 
 const VideoDetails = () => {
-  const db = SQLite.openDatabase("db.testDb"); // returns Database object
-
   const params = useSearchParams();
   const router = useRouter();
 
-  const { isLoading, error, refetch } = useFetch("id", params.id, 1);
+  const { data, isLoading, error, refetch } = useFetch("id", params.id, 1);
 
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [refreshing, setRefreshing] = useState(false);
-  const [data, setData] = useState([]);
-
-  const getVideo = () => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "Select * from `videos` where id=? ",
-        [params.id],
-        (txObj, resultSet) => {
-          setData(resultSet.rows._array);
-          console.log(resultSet.rows._array);
-        },
-        (txObj, error) => console.log(error)
-      );
-    });
-  };
-
-  useEffect(() => {
-    getVideo();
-  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    getVideo();
+    refetch();
     setRefreshing(false);
   }, []);
 
@@ -66,7 +43,7 @@ const VideoDetails = () => {
         return (
           <Specifics
             title="Additonal Materials"
-            points={data[0].title["N/A"]}
+            points={data[0].job_highlights?.Qualifications ?? ["N/A"]}
           />
         );
 
@@ -97,7 +74,7 @@ const VideoDetails = () => {
           headerRight: () => (
             <ScreenHeaderBtn iconUrl={icons.share} dimension="60%" />
           ),
-          headerTitle: "Favorites",
+          headerTitle: "",
         }}
       />
 
@@ -113,18 +90,17 @@ const VideoDetails = () => {
           ) : error ? (
             <Text>Something went wrong</Text>
           ) : data.length === 0 ? (
-            <ActivityIndicator size="large" color={COLORS.primary} />
+            <Text>No data available</Text>
           ) : (
             <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
-              <DownloadView
+              <Company
                 id={data[0].id}
                 title={data[0].title}
                 description={data[0].description}
                 fileName={data[0].fileName}
                 poster={data[0].poster}
                 category={data[0].category}
-                langauge={data[0].language}
-                MIMEType={data[0].MIMEType}
+                language={data[0].language}
               />
 
               <JobTabs

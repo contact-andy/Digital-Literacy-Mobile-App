@@ -8,8 +8,8 @@ const useFetch = (type, endpoint, page) => {
 
   const options = {
     method: "GET",
-    url: `${SERVER.url}/api/video/${type}/${endpoint}/${page}`,
-    // url: `http://192.168.145.254:5000/api/video/findAll/${endpoint}`,
+    url: `${SERVER.url}/api/content/${type}/${endpoint}/${page}`,
+    // url: `http://192.168.145.254:5000/api/content/findAll/${endpoint}`,
 
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +21,7 @@ const useFetch = (type, endpoint, page) => {
 
     try {
       const response = await axios.request(options);
-      // console.log("url: " + options.url);
+      console.log("url: " + options.url);
       // console.log("response.data: " + JSON.stringify(response.data));
       setData(response.data);
       setIsLoading(false);

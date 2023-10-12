@@ -28,7 +28,18 @@ export default Layout = () => {
           <SafeAreaView>
             <View
               style={{
-                height: 250,
+                height: 150,
+                width: "100%",
+              }}
+            >
+              <Image
+                source={images.mintLogo}
+                style={{ height: 150, width: 250 }}
+              />
+            </View>
+            <View
+              style={{
+                height: 200,
                 width: "100%",
                 justifyContent: "center",
                 alignItems: "center",

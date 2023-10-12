@@ -45,6 +45,7 @@ const FavoritesPage = () => {
         );
       });
       console.log("Loading...");
+      console.log(searchResult);
     } catch (error) {
       setSearchError(error);
       console.log(error);

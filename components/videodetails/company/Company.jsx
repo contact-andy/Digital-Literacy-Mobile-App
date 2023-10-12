@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
 
 import styles from "./company.style";
@@ -57,7 +58,7 @@ const Company = ({
   const [likeCounter, setLikeCounter] = useState(countLike);
   const [error, setError] = useState(false);
   const [downloadedVideo, setdownloadedVideo] = useState([]);
-  // console.log("youWatched: " + youWatched);
+  console.log("category: " + category);
   const db = SQLite.openDatabase("db.testDb"); // returns Database object
 
   const setWatchVideo = () => {
@@ -262,6 +263,17 @@ const Company = ({
           resizeMode={ResizeMode.COVER}
           isLooping={false}
           shouldPlay={true}
+          // posterSource={require("../../../assets/loader7.gif")}
+          usePoster={true}
+          PosterComponent={() => {
+            return (
+              <ImageBackground
+                style={{ width: "100%", height: 250 }}
+                source={require("../../../assets/loader7.gif")}
+                resizeMode={ResizeMode.COVER}
+              />
+            );
+          }}
           // onPlaybackStatusUpdate={(status) => setStatus(() => status)}
         />
       </View>

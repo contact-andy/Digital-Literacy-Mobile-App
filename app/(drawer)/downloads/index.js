@@ -13,6 +13,7 @@ import { useRouter } from "expo-router";
 import { Text, SafeAreaView } from "react-native";
 
 import { CompletedVideoCard } from "../../../components";
+import { DownloadContentCard } from "../../../components";
 import { COLORS, icons, SIZES } from "../../../constants";
 import styles from "../../../styles/search";
 import * as SQLite from "expo-sqlite";
@@ -30,7 +31,25 @@ const DownloadsPage = () => {
   const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(false);
   let newPage = page;
-
+  const deleteDownloadHandler = (id) => {
+    console.log("Download Deleted:" + id);
+    try {
+      db.transaction((tx) => {
+        tx.executeSql(
+          `DELETE  FROM videos WHERE id=${id}`,
+          null,
+          (txObj, error) => console.log(error)
+        );
+      });
+      onRefresh();
+      console.log("Deletion completed.");
+    } catch (error) {
+      setSearchError(error);
+      console.log(error);
+    } finally {
+      setSearchLoader(false);
+    }
+  };
   const handleSearch = async (newPage) => {
     setSearchLoader(true);
     let limit = 5;
@@ -86,7 +105,7 @@ const DownloadsPage = () => {
     >
       <Drawer.Screen
         options={{
-          title: "Downloads",
+          title: "Download",
           headerShown: true,
           headerLeft: () => <DrawerToggleButton />,
           drawerStyle: {
@@ -108,11 +127,12 @@ const DownloadsPage = () => {
         }
         data={searchResult}
         renderItem={({ item }) => (
-          <CompletedVideoCard
+          <DownloadContentCard
             video={item}
             handleNavigate={() =>
               router.push(`/(drawer)/downloads/video-details/${item.id}`)
             }
+            deleteDownloadHandler={deleteDownloadHandler}
           />
         )}
         keyExtractor={(item) => item.id}

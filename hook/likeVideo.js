@@ -27,7 +27,13 @@ const likeVideo = async (
     console.log("url: " + options.url);
     console.log("response.data: " + JSON.stringify(response.data));
     console.log("LIKE");
-
+    console.log(`id: ${id}`);
+    console.log(`title: ${title}`);
+    console.log(`description: ${description}`);
+    console.log(`fileName: ${fileName}`);
+    console.log(`poster: ${poster}`);
+    console.log(`category: ${category}`);
+    console.log(`language: ${language}`);
     db.transaction((tx) => {
       tx.executeSql(
         "INSERT INTO `favorites` (`id`, `title`, `description`, `fileName`, `poster`, `category`, `language`) VALUES (?, ?, ?, ?, ?, ?, ?)",

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
 
 import styles from "./company.style";
@@ -40,18 +41,22 @@ const DownloadView = ({
   const [error, setError] = useState(false);
   const [base64, setBase64] = useState(null);
   // const MIMEType = "video/mp4";
-  useEffect(() => {
-    const getLocalFile = async () => {
-      setIsLoading(true);
-      let content = await FileSystem.readAsStringAsync(
-        FileSystem.documentDirectory + fileName,
-        { encoding: FileSystem.EncodingType.Base64 }
-      );
+  const getLocalFile = () => {
+    setIsLoading(true);
+    // let content =
+    FileSystem.readAsStringAsync(FileSystem.documentDirectory + fileName, {
+      encoding: FileSystem.EncodingType.Base64,
+    }).then((content) => {
       setBase64(content);
-      setIsLoading(true);
-    };
+      // alert(`${fileName} Loading complete.`);
+      console.log(`${fileName} Loading complete.`);
+      setIsLoading(false);
+      return;
+    });
+  };
+  useEffect(() => {
     getLocalFile();
-  });
+  }, []);
   return (
     <View style={styles.container}>
       <View
@@ -72,6 +77,17 @@ const DownloadView = ({
           resizeMode={ResizeMode.COVER}
           isLooping={false}
           shouldPlay={true}
+          // posterSource={require("../../../assets/loader7.gif")}
+          usePoster={true}
+          PosterComponent={() => {
+            return (
+              <ImageBackground
+                style={{ width: "100%", height: 250 }}
+                source={require("../../../assets/loader7.gif")}
+                resizeMode={ResizeMode.COVER}
+              />
+            );
+          }}
           // onPlaybackStatusUpdate={(status) => setStatus(() => status)}
         />
       </View>
